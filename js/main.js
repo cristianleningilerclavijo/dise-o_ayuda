@@ -253,6 +253,23 @@
         });
     }
 
+    // Preselecciona la categoría cuando se llega desde una tarjeta del inicio
+    // (por ejemplo crear-reporte.html?categoria=bache).
+    function applyCategoryFromUrl(categoryInput) {
+        if (!categoryInput) return;
+
+        let categoria;
+        try {
+            categoria = new URLSearchParams(window.location.search).get('categoria');
+        } catch (e) {
+            return;
+        }
+
+        if (categoria && Object.prototype.hasOwnProperty.call(CATEGORY_LABELS, categoria)) {
+            categoryInput.value = categoria;
+        }
+    }
+
     function setupCreateReportForm() {
         const form = document.getElementById('createReportForm');
         if (!form) return;
@@ -266,6 +283,8 @@
         const titleError = document.getElementById('report-title-error');
         const categoryError = document.getElementById('report-category-error');
         const descriptionError = document.getElementById('report-description-error');
+
+        applyCategoryFromUrl(categoryInput);
 
         form.addEventListener('submit', function (e) {
             e.preventDefault();

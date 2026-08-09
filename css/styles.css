@@ -659,6 +659,27 @@ body {
 .category-card {
     text-align: center;
     padding: var(--space-lg);
+    text-decoration: none;
+    color: inherit;
+}
+
+.category-card:focus-visible {
+    outline: 3px solid var(--color-secondary);
+    outline-offset: 2px;
+}
+
+/* Llamada a la acción de cada tarjeta: aparece al pasar el mouse o al enfocar */
+.category-card__cta {
+    font-size: var(--font-size-caption);
+    font-weight: 700;
+    color: var(--color-text);
+    opacity: 0.55;
+    transition: opacity 0.2s;
+}
+
+.category-card:hover .category-card__cta,
+.category-card:focus-visible .category-card__cta {
+    opacity: 1;
 }
 
 .category-card__icon {
