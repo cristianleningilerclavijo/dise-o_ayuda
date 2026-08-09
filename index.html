@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AyudaYa — Inicio</title>
     <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0284c7">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="AyudaYa">
+    <link rel="apple-touch-icon" href="assets/images/icon-192.png">
     <link rel="stylesheet" href="css/styles.css">
     <script>
         (function () {
@@ -48,20 +53,20 @@
                     <h1 class="hero__name">AyudaYa</h1>
                 </div>
 
-                <span class="hero__eyebrow">📍 Reportes ciudadanos</span>
+                <span class="hero__eyebrow">📍 Un solo lugar para tus reclamos · Guayaquil</span>
 
                 <div class="hero__intro">
                     <h2 class="hero__headline hero__highlight">
                         Reportá lo que tu barrio necesita, en segundos
                     </h2>
                     <p class="hero__lead">
-                        Conectá con líderes comunitarios para resolver baches, fallas de alumbrado, situaciones de inseguridad y conflictos de convivencia — sin trámites, sin papeleo.
+                        No necesitás saber si le toca al Municipio, a CNEL o a Urvaseo. Reportás acá una sola vez y tu caso se deriva al organismo que corresponde — y queda visible para tus vecinos.
                     </p>
                 </div>
 
                 <div class="section-heading">
                     <h3 class="section-heading__title">¿Qué podés reportar?</h3>
-                    <p class="section-heading__text">Elegí la categoría que mejor describe la situación en tu barrio.</p>
+                    <p class="section-heading__text">Elegí la categoría y el sistema se encarga de a quién le corresponde.</p>
                 </div>
 
                 <div class="category-grid">
@@ -75,6 +80,7 @@
                         </div>
                         <div class="category-card__title">Baches</div>
                         <div class="category-card__text">Reportá huecos y desperfectos en calles y veredas</div>
+                        <span class="category-card__route">Se deriva a <strong>Municipio de Guayaquil</strong></span>
                     </div>
                     <div class="report-card category-card">
                         <div class="category-card__icon category-card__icon--alumbrado" aria-hidden="true">
@@ -86,6 +92,7 @@
                         </div>
                         <div class="category-card__title">Alumbrado</div>
                         <div class="category-card__text">Alertá sobre postes sin luz o cableado dañado</div>
+                        <span class="category-card__route">Se deriva a <strong>CNEL EP</strong></span>
                     </div>
                     <div class="report-card category-card">
                         <div class="category-card__icon category-card__icon--inseguridad" aria-hidden="true">
@@ -97,6 +104,7 @@
                         </div>
                         <div class="category-card__title">Inseguridad</div>
                         <div class="category-card__text">Reportá situaciones de riesgo en tu sector</div>
+                        <span class="category-card__route">Se deriva a <strong>ECU 911</strong></span>
                     </div>
                     <div class="report-card category-card">
                         <div class="category-card__icon category-card__icon--convivencia" aria-hidden="true">
@@ -109,8 +117,13 @@
                         </div>
                         <div class="category-card__title">Convivencia vecinal</div>
                         <div class="category-card__text">Mascotas, ruido y basura fuera de lugar en tu cuadra</div>
+                        <span class="category-card__route">Se deriva a <strong>Comisaría Municipal</strong></span>
                     </div>
                 </div>
+
+                <p class="hero__disclaimer">
+                    Prototipo académico: las derivaciones son ilustrativas y todavía no se envían a los organismos reales.
+                </p>
 
                 <div class="hero__actions">
                     <a href="crear-reporte.html" class="btn btn--primary btn--lg">Crear un reporte</a>
@@ -120,7 +133,7 @@
 
                 <div class="hero__stats">
                     <div class="hero__stat">
-                        <span class="hero__stat-number">3</span>
+                        <span class="hero__stat-number">4</span>
                         <span class="hero__stat-label">categorías de reporte</span>
                     </div>
                     <div class="hero__stat">

@@ -393,6 +393,32 @@
         });
     }
 
+    // Registra el service worker que permite usar la app sin internet.
+    // Ojo: los service workers no funcionan con file://, solo con http(s).
+    function registerServiceWorker() {
+        if (!('serviceWorker' in navigator)) return;
+        if (window.location.protocol === 'file:') return;
+
+        navigator.serviceWorker.register('sw.js').catch(function () {});
+    }
+
+    // Muestra un aviso cuando el dispositivo se queda sin conexión.
+    function setupOfflineIndicator() {
+        const banner = document.createElement('div');
+        banner.className = 'offline-banner';
+        banner.setAttribute('role', 'status');
+        banner.textContent = 'Sin conexión — podés seguir creando reportes, se guardan en tu dispositivo.';
+        document.body.appendChild(banner);
+
+        function sync() {
+            banner.classList.toggle('offline-banner--visible', !navigator.onLine);
+        }
+
+        window.addEventListener('online', sync);
+        window.addEventListener('offline', sync);
+        sync();
+    }
+
     function showFormSuccess(form, message) {
         var btn = form.querySelector('.btn--primary');
         if (btn) {
@@ -415,6 +441,8 @@
         setupPhotoPreview();
         setupLocationField();
         renderUserReports();
+        setupOfflineIndicator();
+        registerServiceWorker();
     }
 
     if (document.readyState === 'loading') {

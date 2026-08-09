@@ -1,0 +1,26 @@
+{
+  "name": "AyudaYa — Reportes ciudadanos de Guayaquil",
+  "short_name": "AyudaYa",
+  "description": "Un solo lugar para reportar problemas de tu barrio: baches, alumbrado, inseguridad y convivencia vecinal.",
+  "lang": "es",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f8fafc",
+  "theme_color": "#0284c7",
+  "icons": [
+    {
+      "src": "assets/images/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/images/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
