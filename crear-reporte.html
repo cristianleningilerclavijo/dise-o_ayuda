@@ -24,23 +24,23 @@
 <body>
     <nav class="navbar" aria-label="Navegación principal">
         <a href="login.html" class="navbar__item">
-            <span class="navbar__icon" aria-hidden="true">👤</span>
+            <svg class="navbar__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.6 3.1-6 7-6s7 2.4 7 6"/></svg>
             <span>Login</span>
         </a>
         <a href="index.html" class="navbar__item">
-            <span class="navbar__icon" aria-hidden="true">🏠</span>
+            <svg class="navbar__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>
             <span>Inicio</span>
         </a>
         <a href="reportes.html" class="navbar__item">
-            <span class="navbar__icon" aria-hidden="true">📋</span>
+            <svg class="navbar__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/></svg>
             <span>Reportes</span>
         </a>
         <a href="crear-reporte.html" class="navbar__item navbar__item--active" aria-current="page">
-            <span class="navbar__icon" aria-hidden="true">➕</span>
+            <svg class="navbar__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8.5v7M8.5 12h7"/></svg>
             <span>Crear</span>
         </a>
         <button type="button" class="navbar__item navbar__item--button" id="themeToggle" aria-pressed="false">
-            <span class="navbar__icon" id="themeToggleIcon" aria-hidden="true">🌙</span>
+            <svg class="navbar__icon" id="themeToggleIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/></svg>
             <span>Tema</span>
         </button>
     </nav>
@@ -77,7 +77,7 @@
             <div class="form__group">
                 <label class="form__label" for="report-photo">Foto</label>
                 <label class="placeholder-visual" for="report-photo" id="reportPhotoLabel" aria-label="Agregar foto del reporte">
-                    <span class="placeholder-visual__icon" aria-hidden="true">📷</span>
+                    <svg class="placeholder-visual__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8.5h3.2L8 6h8l1.8 2.5H21a1 1 0 0 1 1 1v8.5a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V9.5a1 1 0 0 1 1-1z"/><circle cx="12" cy="13.5" r="3.5"/></svg>
                     <span>Toca para agregar una foto</span>
                 </label>
                 <input class="sr-only" id="report-photo" type="file" accept="image/*">
@@ -88,7 +88,9 @@
                 <label class="form__label" for="report-location">Ubicación</label>
                 <div class="location-row">
                     <input class="form__input" id="report-location" type="text" placeholder="Ej: Sector Bastión Popular, Mz. 4">
-                    <button class="btn btn--secondary btn--icon" type="button" id="useLocationBtn" aria-label="Usar mi ubicación actual" title="Usar mi ubicación actual">📍</button>
+                    <button class="btn btn--secondary btn--icon" type="button" id="useLocationBtn" aria-label="Usar mi ubicación actual" title="Usar mi ubicación actual">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-6.6 7-11a7 7 0 1 0-14 0c0 4.4 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+                    </button>
                 </div>
                 <span class="location-status" id="report-location-status"></span>
                 <span class="form__error" id="report-map-error"></span>

@@ -26,6 +26,18 @@
         convivencia: 'badge--category-convivencia'
     };
 
+    // Trazos internos de los iconos SVG que el JS necesita insertar.
+    // El <svg> contenedor ya existe en el HTML; acá solo se cambia su contenido.
+    const ICON_MOON = '<path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/>';
+    const ICON_SUN = '<circle cx="12" cy="12" r="4"/>' +
+        '<path d="M12 2.5v2M12 19.5v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4' +
+        'M2.5 12h2M19.5 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/>';
+
+    const ICON_PIN = '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
+        'stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+        '<path d="M12 21s7-6.6 7-11a7 7 0 1 0-14 0c0 4.4 7 11 7 11z"/>' +
+        '<circle cx="12" cy="10" r="2.5"/></svg>';
+
     function escapeHtml(value) {
         return String(value).replace(/[&<>"']/g, function (ch) {
             return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch];
@@ -379,7 +391,7 @@
                     '<span class="badge ' + categoryClass + '">' + escapeHtml(categoryLabel) + '</span>' +
                     '<span class="report-card__date">' + escapeHtml(report.date) + '</span>' +
                 '</div>' +
-                '<div class="report-card__location">📍 ' + escapeHtml(report.location || 'Ubicación no especificada') + '</div>';
+                '<div class="report-card__location">' + ICON_PIN + ' ' + escapeHtml(report.location || 'Ubicación no especificada') + '</div>';
 
             list.insertBefore(article, list.firstChild);
         });
@@ -393,7 +405,7 @@
         function syncIcon() {
             const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
             btn.setAttribute('aria-pressed', String(isDark));
-            if (icon) icon.textContent = isDark ? '☀️' : '🌙';
+            if (icon) icon.innerHTML = isDark ? ICON_SUN : ICON_MOON;
         }
 
         syncIcon();
