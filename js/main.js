@@ -95,7 +95,7 @@
             let isValid = true;
 
             isValid = validateField(userInput, userError, function (value) {
-                if (value.length < 3) return { valid: false, message: 'Ingresá tu usuario' };
+                if (value.length < 3) return { valid: false, message: 'Ingresa tu usuario' };
                 return { valid: true };
             }) && isValid;
 
@@ -141,7 +141,7 @@
             let isValid = true;
 
             isValid = validateField(nameInput, nameError, function (value) {
-                if (value.trim().length < 3) return { valid: false, message: 'Ingresá tu nombre completo' };
+                if (value.trim().length < 3) return { valid: false, message: 'Ingresa tu nombre completo' };
                 return { valid: true };
             }) && isValid;
 
@@ -152,7 +152,7 @@
 
             isValid = validateField(emailInput, emailError, function (value) {
                 var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (!emailRegex.test(value)) return { valid: false, message: 'Ingresá un correo electrónico válido' };
+                if (!emailRegex.test(value)) return { valid: false, message: 'Ingresa un correo electrónico válido' };
                 return { valid: true };
             }) && isValid;
 
@@ -218,7 +218,7 @@
             if (!('geolocation' in navigator)) {
                 if (status) {
                     status.classList.remove('location-status--ok');
-                    status.textContent = 'Tu navegador no soporta geolocalización. Escribí la ubicación manualmente.';
+                    status.textContent = 'Tu navegador no soporta geolocalización. Escribe la ubicación manualmente.';
                 }
                 return;
             }
@@ -244,7 +244,7 @@
                 function () {
                     if (status) {
                         status.classList.remove('location-status--ok');
-                        status.textContent = 'No se pudo obtener tu ubicación. Escribila manualmente.';
+                        status.textContent = 'No se pudo obtener tu ubicación. Escríbela manualmente.';
                     }
                     btn.disabled = false;
                 },
@@ -296,7 +296,7 @@
             }) && isValid;
 
             isValid = validateField(categoryInput, categoryError, function (value) {
-                if (!value) return { valid: false, message: 'Seleccioná una categoría' };
+                if (!value) return { valid: false, message: 'Selecciona una categoría' };
                 return { valid: true };
             }) && isValid;
 
@@ -426,7 +426,7 @@
         const banner = document.createElement('div');
         banner.className = 'offline-banner';
         banner.setAttribute('role', 'status');
-        banner.textContent = 'Sin conexión — podés seguir creando reportes, se guardan en tu dispositivo.';
+        banner.textContent = 'Sin conexión — puedes seguir creando reportes, se guardan en tu dispositivo.';
         document.body.appendChild(banner);
 
         function sync() {
