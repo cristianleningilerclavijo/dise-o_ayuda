@@ -702,36 +702,65 @@ body {
     color: var(--color-text);
 }
 
-/* Foto como franja superior de la tarjeta: se ve a plena luz, sin capa
-   oscura encima, y el texto va debajo sobre el fondo normal, donde el
-   contraste está garantizado por la paleta. */
+/* Foto ocupando toda la tarjeta. La capa oscura encima es suave para que
+   la imagen se aprecie; el text-shadow compensa la legibilidad en las
+   zonas claras de la foto. */
 .category-card--photo {
-    padding-top: 0;
+    position: relative;
     overflow: hidden;
-}
-
-.category-card__photo {
-    display: block;
-    height: 150px;
-    margin: 0 calc(var(--space-lg) * -1) var(--space-md);
-    background-color: var(--color-gray-100);
+    background-color: var(--color-gray-700);
     background-size: cover;
     background-position: center;
+    border-color: transparent;
 }
 
-.category-card__photo--bache {
+.category-card--photo::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(15, 23, 42, 0.3) 0%, rgba(15, 23, 42, 0.72) 100%);
+}
+
+.category-card--photo > * {
+    position: relative;
+    z-index: 1;
+}
+
+.category-card--photo .category-card__text,
+.category-card--photo .category-card__route,
+.category-card--photo .category-card__route strong,
+.category-card--photo .category-card__cta {
+    color: #ffffff;
+    text-shadow: 0 1px 3px rgba(15, 23, 42, 0.9);
+}
+
+.category-card--photo .category-card__title {
+    color: #fca5a5;
+    text-shadow: 0 1px 3px rgba(15, 23, 42, 0.9);
+}
+
+.category-card--photo .category-card__route {
+    border-top-color: rgba(255, 255, 255, 0.3);
+}
+
+.category-card--photo .category-card__icon {
+    background-color: rgba(255, 255, 255, 0.25);
+    color: #ffffff;
+}
+
+.category-card--bache {
     background-image: url("../assets/images/cat-bache.jpg");
 }
 
-.category-card__photo--alumbrado {
+.category-card--alumbrado {
     background-image: url("../assets/images/cat-alumbrado.jpg");
 }
 
-.category-card__photo--inseguridad {
+.category-card--inseguridad {
     background-image: url("../assets/images/cat-inseguridad.jpg");
 }
 
-.category-card__photo--convivencia {
+.category-card--convivencia {
     background-image: url("../assets/images/cat-convivencia.webp");
 }
 
