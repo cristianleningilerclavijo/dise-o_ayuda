@@ -469,8 +469,21 @@
         banner.textContent = 'Sin conexión — puedes seguir creando reportes, se guardan en tu dispositivo.';
         document.body.appendChild(banner);
 
+        // El aviso se muestra unos segundos y se va: quedarse fijo en pantalla
+        // molesta más de lo que informa, sobre todo en móvil.
+        let timer;
+
         function sync() {
-            banner.classList.toggle('offline-banner--visible', !navigator.onLine);
+            clearTimeout(timer);
+
+            if (!navigator.onLine) {
+                banner.classList.add('offline-banner--visible');
+                timer = setTimeout(function () {
+                    banner.classList.remove('offline-banner--visible');
+                }, 3000);
+            } else {
+                banner.classList.remove('offline-banner--visible');
+            }
         }
 
         window.addEventListener('online', sync);

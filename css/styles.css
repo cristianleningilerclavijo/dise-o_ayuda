@@ -15,6 +15,10 @@
     --color-text-muted: #7A7A7A;
     --color-text-inverse: #ffffff;
 
+    /* Rojo de los títulos de categoría: un tono por tema, porque el mismo
+       rojo no alcanza 4.5:1 sobre fondo claro y sobre fondo oscuro a la vez. */
+    --color-category-title: #dc2626;
+
     --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     --font-size-title: 1.5rem;
     --font-size-subtitle: 1.125rem;
@@ -698,65 +702,36 @@ body {
     color: var(--color-text);
 }
 
-/* Tarjeta con foto de fondo.
-   El degradado oscuro encima (scrim) no es decorativo: garantiza que el
-   texto blanco mantenga el contraste mínimo sea cual sea la foto. */
+/* Foto como franja superior de la tarjeta: se ve a plena luz, sin capa
+   oscura encima, y el texto va debajo sobre el fondo normal, donde el
+   contraste está garantizado por la paleta. */
 .category-card--photo {
-    position: relative;
+    padding-top: 0;
     overflow: hidden;
-    background-color: var(--color-gray-700);
+}
+
+.category-card__photo {
+    display: block;
+    height: 150px;
+    margin: 0 calc(var(--space-lg) * -1) var(--space-md);
+    background-color: var(--color-gray-100);
     background-size: cover;
     background-position: center;
-    border-color: transparent;
 }
 
-.category-card--photo::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(180deg, rgba(15, 23, 42, 0.75) 0%, rgba(15, 23, 42, 0.92) 100%);
-}
-
-.category-card--photo > * {
-    position: relative;
-    z-index: 1;
-}
-
-.category-card--photo .category-card__text,
-.category-card--photo .category-card__route,
-.category-card--photo .category-card__route strong,
-.category-card--photo .category-card__cta {
-    color: #ffffff;
-}
-
-/* Rojo claro: un rojo saturado sobre el fondo oscuro de la foto no
-   alcanzaría el contraste mínimo de 4.5:1. Este llega a ~7:1. */
-.category-card--photo .category-card__title {
-    color: #fca5a5;
-}
-
-.category-card--photo .category-card__route {
-    border-top-color: rgba(255, 255, 255, 0.25);
-}
-
-.category-card--photo .category-card__icon {
-    background-color: rgba(255, 255, 255, 0.2);
-    color: #ffffff;
-}
-
-.category-card--bache {
+.category-card__photo--bache {
     background-image: url("../assets/images/cat-bache.jpg");
 }
 
-.category-card--alumbrado {
+.category-card__photo--alumbrado {
     background-image: url("../assets/images/cat-alumbrado.jpg");
 }
 
-.category-card--inseguridad {
+.category-card__photo--inseguridad {
     background-image: url("../assets/images/cat-inseguridad.jpg");
 }
 
-.category-card--convivencia {
+.category-card__photo--convivencia {
     background-image: url("../assets/images/cat-convivencia.webp");
 }
 
@@ -787,22 +762,25 @@ body {
     right: 0;
     bottom: calc(var(--nav-height) + env(safe-area-inset-bottom, 0px));
     z-index: 90;
-    display: none;
     padding: var(--space-sm) var(--space-md);
     background-color: #fef3c7;
     color: #92400e;
     font-size: var(--font-size-caption);
     font-weight: 600;
     text-align: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
 }
 
 .offline-banner--visible {
-    display: block;
+    opacity: 1;
+    visibility: visible;
 }
 
 .category-card__title {
     font-weight: 700;
-    color: var(--color-text);
+    color: var(--color-category-title);
     margin-bottom: var(--space-xs);
 }
 
@@ -1027,6 +1005,7 @@ input[type="password"]::-webkit-inner-spin-button {
     --color-text-muted: #94a3b8;
     --color-gray-100: #1e293b;
     --color-gray-300: #334155;
+    --color-category-title: #fca5a5;
     --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
     --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
 }
