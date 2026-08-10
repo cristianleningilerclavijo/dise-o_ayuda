@@ -988,6 +988,34 @@ body {
         height: 18px;
     }
 
+    /* Cabecera clásica: marca a la izquierda y navegación al extremo
+       derecho. El margen automático del primer ítem empuja al resto. */
+    .navbar__brand {
+        display: flex;
+        align-items: center;
+        gap: var(--space-sm);
+        text-decoration: none;
+        color: var(--color-text);
+        font-weight: 700;
+        font-size: var(--font-size-subtitle);
+        letter-spacing: -0.01em;
+    }
+
+    .navbar__brand:focus-visible {
+        outline: 3px solid var(--color-secondary);
+        outline-offset: 2px;
+        border-radius: var(--radius-sm);
+    }
+
+    .navbar__brand-logo {
+        width: 28px;
+        height: 28px;
+    }
+
+    .navbar__brand + .navbar__item {
+        margin-left: auto;
+    }
+
     .screen {
         padding-bottom: var(--space-lg);
     }
@@ -1068,6 +1096,12 @@ input[type="password"]::-webkit-inner-spin-button {
 
 body {
     transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+/* La marca solo aparece en la barra superior de escritorio. En móvil la
+   barra está abajo y con cinco ítems ya va justa de espacio. */
+.navbar__brand {
+    display: none;
 }
 
 .navbar__item--button {
