@@ -1,3 +1,15 @@
+/* Inter, servida desde la propia carpeta del proyecto: sin CDN, sin pedirle
+   nada a servidores ajenos. Es una fuente variable, así que un solo archivo
+   de 47 KB cubre todos los pesos de 100 a 900.
+   Licencia SIL Open Font 1.1 — ver assets/fonts/LICENSE-inter.txt */
+@font-face {
+    font-family: "Inter";
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+    src: url("../assets/fonts/inter-variable.woff2") format("woff2");
+}
+
 :root {
     --color-primary: #6EC1E4;
     --color-secondary: #61CE70;
@@ -21,7 +33,7 @@
        rojo no alcanza 4.5:1 sobre fondo claro y sobre fondo oscuro a la vez. */
     --color-category-title: #dc2626;
 
-    --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     --font-size-title: 1.5rem;
     --font-size-subtitle: 1.125rem;
     --font-size-body: 0.9375rem;
@@ -1000,8 +1012,21 @@ body {
     }
 
     /* En escritorio, 2 columnas: tarjetas anchas con lugar para una imagen */
+    /* Grilla bento: en vez de cuatro cajas iguales, una destacada grande,
+       dos medianas y una ancha abajo. Se ordena por nth-child para no
+       ensuciar el HTML con clases de maquetación. */
     .category-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .category-grid > :nth-child(1) {
+        grid-column: span 2;
+        grid-row: span 2;
+        align-content: space-between;
+    }
+
+    .category-grid > :nth-child(4) {
+        grid-column: span 3;
     }
 
     .styleguide__component-grid {
@@ -1053,32 +1078,29 @@ body {
     cursor: pointer;
 }
 
-/* Animaciones de entrada */
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-    to {
-        opacity: 1;
-        transform: none;
-    }
+/* Escalonado: los elementos de un mismo grupo no aparecen todos de golpe,
+   sino uno detrás de otro. */
+.category-grid > :nth-child(2) { transition-delay: 0.06s; }
+.category-grid > :nth-child(3) { transition-delay: 0.12s; }
+.category-grid > :nth-child(4) { transition-delay: 0.18s; }
+
+.list .report-card:nth-child(2) { transition-delay: 0.06s; }
+.list .report-card:nth-child(3) { transition-delay: 0.12s; }
+.list .report-card:nth-child(n+4) { transition-delay: 0.18s; }
+
+/* Aparición al hacer scroll. La clase .reveal la agrega el JS, nunca el
+   HTML: así, sin JavaScript, el contenido se ve normalmente en vez de
+   quedar invisible para siempre. */
+.reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
-.report-card,
-.category-card {
-    animation: fadeInUp 0.35s ease both;
+.reveal--visible {
+    opacity: 1;
+    transform: none;
 }
-
-.list .report-card:nth-child(1) { animation-delay: 0.03s; }
-.list .report-card:nth-child(2) { animation-delay: 0.08s; }
-.list .report-card:nth-child(3) { animation-delay: 0.13s; }
-.list .report-card:nth-child(4) { animation-delay: 0.18s; }
-.list .report-card:nth-child(n+5) { animation-delay: 0.22s; }
-
-.category-grid .category-card:nth-child(1) { animation-delay: 0.03s; }
-.category-grid .category-card:nth-child(2) { animation-delay: 0.09s; }
-.category-grid .category-card:nth-child(3) { animation-delay: 0.15s; }
 
 .report-card--highlight {
     border-color: var(--color-secondary);

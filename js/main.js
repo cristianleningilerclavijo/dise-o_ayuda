@@ -491,6 +491,39 @@
         sync();
     }
 
+    // Hace aparecer las secciones a medida que entran en pantalla.
+    // Solo se activa si el navegador soporta IntersectionObserver y si la
+    // persona no pidió reducir el movimiento; en cualquier otro caso el
+    // contenido queda visible tal cual, sin tocar nada.
+    function setupScrollReveal() {
+        const objetivos = document.querySelectorAll(
+            '.hero__brand, .hero__headline, .section-heading, .category-card, ' +
+            '.hero__disclaimer, .hero__actions, .hero__stats, .list .report-card'
+        );
+        if (!objetivos.length) return;
+
+        const prefiereMenosMovimiento = window.matchMedia &&
+            window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        if (prefiereMenosMovimiento || !('IntersectionObserver' in window)) return;
+
+        objetivos.forEach(function (el) {
+            el.classList.add('reveal');
+        });
+
+        const observador = new IntersectionObserver(function (entradas) {
+            entradas.forEach(function (entrada) {
+                if (!entrada.isIntersecting) return;
+                entrada.target.classList.add('reveal--visible');
+                observador.unobserve(entrada.target);
+            });
+        }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+        objetivos.forEach(function (el) {
+            observador.observe(el);
+        });
+    }
+
     function showFormSuccess(form, message) {
         var btn = form.querySelector('.btn--primary');
         if (btn) {
@@ -514,6 +547,7 @@
         setupLocationField();
         renderUserReports();
         setupOfflineIndicator();
+        setupScrollReveal();
         registerServiceWorker();
     }
 
