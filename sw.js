@@ -55,6 +55,10 @@ self.addEventListener('activate', function (event) {
 self.addEventListener('fetch', function (event) {
     if (event.request.method !== 'GET') return;
 
+    // Las peticiones a otros dominios (por ejemplo el mapa de OpenStreetMap)
+    // las maneja el navegador directamente; acá solo se cachea lo propio.
+    if (new URL(event.request.url).origin !== self.location.origin) return;
+
     event.respondWith(
         caches.match(event.request).then(function (cached) {
             const network = fetch(event.request).then(function (response) {

@@ -229,6 +229,7 @@ body {
 
 .form--narrow {
     max-width: 600px;
+    margin: 0 auto;
 }
 
 .form__select {
@@ -468,10 +469,33 @@ body {
     color: var(--color-success);
 }
 
+/* Mini mapa: oculto hasta que haya una ubicación que mostrar.
+   Necesita conexión, porque las imágenes del mapa se descargan. */
+.location-map {
+    display: none;
+    width: 100%;
+    height: 180px;
+    margin-top: var(--space-sm);
+    border: 1px solid var(--color-gray-300);
+    border-radius: var(--radius-md);
+}
+
+.location-map--visible {
+    display: block;
+}
+
 /* Pantallas generales */
 .screen {
     padding: var(--space-lg) var(--space-md);
     padding-bottom: calc(var(--nav-height) + var(--space-lg) + env(safe-area-inset-bottom, 0px));
+}
+
+/* Centra la columna de contenido en pantallas anchas.
+   El ancho máximo va en el propio .screen para no duplicar el padding. */
+.screen--narrow {
+    max-width: var(--container-max);
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .screen--centered {

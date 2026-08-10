@@ -220,6 +220,31 @@
         });
     }
 
+    // Muestra el mini mapa centrado en las coordenadas dadas.
+    // Usa el mapa embebido de OpenStreetMap: no necesita clave de API ni
+    // cargar ninguna librería, solo conexión para descargar las imágenes.
+    function showLocationMap(lat, lng) {
+        const map = document.getElementById('reportMap');
+        if (!map) return;
+
+        if (!navigator.onLine) {
+            map.classList.remove('location-map--visible');
+            return;
+        }
+
+        const margen = 0.004;
+        const bbox = [
+            (lng - margen).toFixed(5),
+            (lat - margen).toFixed(5),
+            (lng + margen).toFixed(5),
+            (lat + margen).toFixed(5)
+        ].join(',');
+
+        map.src = 'https://www.openstreetmap.org/export/embed.html?bbox=' + bbox +
+            '&layer=mapnik&marker=' + lat.toFixed(5) + ',' + lng.toFixed(5);
+        map.classList.add('location-map--visible');
+    }
+
     function setupLocationField() {
         const btn = document.getElementById('useLocationBtn');
         const input = document.getElementById('report-location');
@@ -243,14 +268,17 @@
 
             navigator.geolocation.getCurrentPosition(
                 function (position) {
-                    const lat = position.coords.latitude.toFixed(5);
-                    const lng = position.coords.longitude.toFixed(5);
-                    input.value = 'Lat ' + lat + ', Lng ' + lng;
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+                    input.value = 'Lat ' + lat.toFixed(5) + ', Lng ' + lng.toFixed(5);
                     clearError(input, document.getElementById('report-map-error'));
                     if (status) {
                         status.classList.add('location-status--ok');
-                        status.textContent = 'Ubicación actual detectada.';
+                        status.textContent = navigator.onLine
+                            ? 'Ubicación actual detectada.'
+                            : 'Ubicación guardada. El mapa se verá cuando haya conexión.';
                     }
+                    showLocationMap(lat, lng);
                     btn.disabled = false;
                 },
                 function () {
