@@ -597,7 +597,7 @@
             temporizador = setInterval(function () {
                 const actual = indiceActual();
                 irA(actual >= tarjetas.length - 1 ? 0 : actual + 1);
-            }, 5000);
+            }, 250);
         }
 
         ['mouseenter', 'focusin', 'pointerdown', 'touchstart'].forEach(function (evento) {
