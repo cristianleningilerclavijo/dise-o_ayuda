@@ -50,22 +50,24 @@
     </nav>
 
     <main class="screen home-hero">
-        <div class="container">
-            <div class="hero">
-                <div class="hero__brand">
-                    <img src="assets/images/logo-ayudaya.svg" alt="AyudaYa" class="hero__logo">
-                    <h1 class="hero__name">AyudaYa</h1>
-                </div>
+        
+        <div class="hero">
+            <div class="hero__brand">
+            </div>
 
                 <h2 class="hero__headline">
-                    Reporta lo que tu barrio necesita, en segundos
+                    Reporta lo que tu barrio necesita
                 </h2>
 
                 <div class="section-heading">
                     <h3 class="section-heading__title">¿Qué puedes reportar?</h3>
                 </div>
 
-                <div class="category-grid">
+                <div class="carousel" id="categoryCarousel">
+                    <button class="carousel__arrow carousel__arrow--prev" type="button" aria-label="Categoría anterior">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+                    </button>
+                    <div class="carousel__track" id="categoryTrack">
                     <a href="crear-reporte.html?categoria=bache" class="report-card category-card category-card--photo category-card--bache">
                         <div class="category-card__icon category-card__icon--bache" aria-hidden="true">
                             <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 20h18"/><ellipse cx="12" cy="14.5" rx="5" ry="3"/><path d="M12 11.5V8M8.6 12.2 6.5 9.5M15.4 12.2l2.1-2.7"/></svg>
@@ -102,6 +104,11 @@
                         <span class="category-card__route">Se envía a la <strong>Comisaría Municipal</strong></span>
                         <span class="category-card__cta">Reportar →</span>
                     </a>
+                    </div>
+                    <button class="carousel__arrow carousel__arrow--next" type="button" aria-label="Categoría siguiente">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+                    </button>
+                    <div class="carousel__dots" id="categoryDots" role="tablist" aria-label="Ir a la categoría"></div>
                 </div>
 
                 <p class="hero__disclaimer">

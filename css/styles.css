@@ -666,10 +666,105 @@ body {
 }
 
 /* Grilla de categorías del inicio */
-.category-grid {
+/* Carrusel de categorías. El desplazamiento lo hace el propio navegador
+   con scroll-snap: así funciona el gesto táctil y el teclado sin código
+   extra, y las flechas solo empujan ese scroll. */
+.carousel {
+    position: relative;
+}
+
+.carousel__track {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-auto-flow: column;
+    grid-auto-columns: 88%;
     gap: var(--space-md);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    padding-bottom: var(--space-xs);
+}
+
+.carousel__track::-webkit-scrollbar {
+    display: none;
+}
+
+.carousel__track > * {
+    scroll-snap-align: center;
+}
+
+.carousel__arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--color-gray-300);
+    border-radius: 50%;
+    background-color: var(--color-surface);
+    color: var(--color-text);
+    cursor: pointer;
+    box-shadow: var(--shadow-md);
+    transition: background-color 0.2s, transform 0.15s;
+}
+
+.carousel__arrow:hover {
+    background-color: var(--color-gray-100);
+}
+
+.carousel__arrow:active {
+    transform: translateY(-50%) scale(0.94);
+}
+
+.carousel__arrow:focus-visible {
+    outline: 3px solid var(--color-secondary);
+    outline-offset: 2px;
+}
+
+.carousel__arrow[disabled] {
+    opacity: 0.35;
+    cursor: default;
+}
+
+.carousel__arrow--prev {
+    left: calc(var(--space-sm) * -1);
+}
+
+.carousel__arrow--next {
+    right: calc(var(--space-sm) * -1);
+}
+
+.carousel__dots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-top: var(--space-md);
+}
+
+.carousel__dot {
+    width: 8px;
+    height: 8px;
+    padding: 0;
+    border: none;
+    border-radius: 999px;
+    background-color: var(--color-gray-300);
+    cursor: pointer;
+    transition: width 0.25s, background-color 0.25s;
+}
+
+.carousel__dot--active {
+    width: 26px;
+    background-color: var(--color-primary);
+}
+
+.carousel__dot:focus-visible {
+    outline: 3px solid var(--color-secondary);
+    outline-offset: 3px;
 }
 
 .category-card {
@@ -962,7 +1057,11 @@ body {
     display: grid;
     gap: var(--space-md);
 }
-
+/* La marca solo aparece en la barra superior de escritorio. En móvil la
+   barra está abajo y con cinco ítems ya va justa de espacio. */
+.navbar__brand {
+    display: none;
+}
 /* Responsive */
 @media (min-width: 768px) {
     .navbar {
@@ -1039,22 +1138,18 @@ body {
         font-size: 2.25rem;
     }
 
-    /* En escritorio, 2 columnas: tarjetas anchas con lugar para una imagen */
-    /* Grilla bento: en vez de cuatro cajas iguales, una destacada grande,
-       dos medianas y una ancha abajo. Se ordena por nth-child para no
-       ensuciar el HTML con clases de maquetación. */
-    .category-grid {
-        grid-template-columns: repeat(3, 1fr);
+    /* En escritorio entran dos tarjetas y se asoma la tercera, para que se
+       entienda que hay más contenido hacia el costado. */
+    .carousel__track {
+        grid-auto-columns: 46%;
     }
 
-    .category-grid > :nth-child(1) {
-        grid-column: span 2;
-        grid-row: span 2;
-        align-content: space-between;
+    .carousel__arrow--prev {
+        left: calc(var(--space-lg) * -1);
     }
 
-    .category-grid > :nth-child(4) {
-        grid-column: span 3;
+    .carousel__arrow--next {
+        right: calc(var(--space-lg) * -1);
     }
 
     .styleguide__component-grid {
@@ -1098,11 +1193,7 @@ body {
     transition: background-color 0.25s ease, color 0.25s ease;
 }
 
-/* La marca solo aparece en la barra superior de escritorio. En móvil la
-   barra está abajo y con cinco ítems ya va justa de espacio. */
-.navbar__brand {
-    display: none;
-}
+
 
 .navbar__item--button {
     background: none;
@@ -1114,9 +1205,6 @@ body {
 
 /* Escalonado: los elementos de un mismo grupo no aparecen todos de golpe,
    sino uno detrás de otro. */
-.category-grid > :nth-child(2) { transition-delay: 0.06s; }
-.category-grid > :nth-child(3) { transition-delay: 0.12s; }
-.category-grid > :nth-child(4) { transition-delay: 0.18s; }
 
 .list .report-card:nth-child(2) { transition-delay: 0.06s; }
 .list .report-card:nth-child(3) { transition-delay: 0.12s; }

@@ -491,13 +491,134 @@
         sync();
     }
 
+    // Carrusel de categorías. El desplazamiento real lo hace el navegador
+    // (scroll-snap); acá solo se empuja ese scroll y se sincronizan los
+    // puntitos con la tarjeta que quedó centrada.
+    function setupCategoryCarousel() {
+        const carrusel = document.getElementById('categoryCarousel');
+        const pista = document.getElementById('categoryTrack');
+        const puntos = document.getElementById('categoryDots');
+        if (!carrusel || !pista || !puntos) return;
+
+        const tarjetas = Array.prototype.slice.call(pista.children);
+        if (tarjetas.length < 2) return;
+
+        const anterior = carrusel.querySelector('.carousel__arrow--prev');
+        const siguiente = carrusel.querySelector('.carousel__arrow--next');
+
+        function indiceActual() {
+            const centro = pista.scrollLeft + pista.clientWidth / 2;
+            let mejor = 0;
+            let menorDistancia = Infinity;
+            tarjetas.forEach(function (tarjeta, i) {
+                const centroTarjeta = tarjeta.offsetLeft + tarjeta.offsetWidth / 2;
+                const distancia = Math.abs(centroTarjeta - centro);
+                if (distancia < menorDistancia) {
+                    menorDistancia = distancia;
+                    mejor = i;
+                }
+            });
+            return mejor;
+        }
+
+        function irA(i) {
+            const destino = Math.max(0, Math.min(i, tarjetas.length - 1));
+            const tarjeta = tarjetas[destino];
+            pista.scrollTo({
+                left: tarjeta.offsetLeft - (pista.clientWidth - tarjeta.offsetWidth) / 2,
+                behavior: 'smooth'
+            });
+        }
+
+        // Puntitos: uno por tarjeta
+        tarjetas.forEach(function (tarjeta, i) {
+            const punto = document.createElement('button');
+            punto.type = 'button';
+            punto.className = 'carousel__dot';
+            punto.setAttribute('aria-label', 'Ver categoría ' + (i + 1) + ' de ' + tarjetas.length);
+            punto.addEventListener('click', function () {
+                detenerAuto();
+                irA(i);
+            });
+            puntos.appendChild(punto);
+        });
+
+        const listaPuntos = Array.prototype.slice.call(puntos.children);
+
+        function sincronizar() {
+            const activo = indiceActual();
+            listaPuntos.forEach(function (punto, i) {
+                punto.classList.toggle('carousel__dot--active', i === activo);
+                punto.setAttribute('aria-current', i === activo ? 'true' : 'false');
+            });
+            if (anterior) anterior.disabled = activo === 0;
+            if (siguiente) siguiente.disabled = activo === tarjetas.length - 1;
+        }
+
+        if (anterior) {
+            anterior.addEventListener('click', function () {
+                detenerAuto();
+                irA(indiceActual() - 1);
+            });
+        }
+        if (siguiente) {
+            siguiente.addEventListener('click', function () {
+                detenerAuto();
+                irA(indiceActual() + 1);
+            });
+        }
+
+        let esperandoCuadro = false;
+        pista.addEventListener('scroll', function () {
+            if (esperandoCuadro) return;
+            esperandoCuadro = true;
+            window.requestAnimationFrame(function () {
+                sincronizar();
+                esperandoCuadro = false;
+            });
+        });
+
+        // Avance automático. Se frena al interactuar y no arranca si la
+        // persona pidió reducir el movimiento.
+        let temporizador = null;
+
+        function detenerAuto() {
+            if (temporizador) {
+                clearInterval(temporizador);
+                temporizador = null;
+            }
+        }
+
+        function arrancarAuto() {
+            const prefiereQuieto = window.matchMedia &&
+                window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            if (prefiereQuieto || temporizador) return;
+
+            temporizador = setInterval(function () {
+                const actual = indiceActual();
+                irA(actual >= tarjetas.length - 1 ? 0 : actual + 1);
+            }, 5000);
+        }
+
+        ['mouseenter', 'focusin', 'pointerdown', 'touchstart'].forEach(function (evento) {
+            carrusel.addEventListener(evento, detenerAuto, { passive: true });
+        });
+
+        sincronizar();
+        arrancarAuto();
+    }
+
     // Hace aparecer las secciones a medida que entran en pantalla.
     // Solo se activa si el navegador soporta IntersectionObserver y si la
     // persona no pidió reducir el movimiento; en cualquier otro caso el
     // contenido queda visible tal cual, sin tocar nada.
     function setupScrollReveal() {
         const objetivos = document.querySelectorAll(
-            '.hero__brand, .hero__headline, .section-heading, .category-card, ' +
+            // Ojo: no se incluye .category-card. Están dentro de un carrusel
+            // horizontal, así que las que quedan fuera de vista nunca
+            // "entrarían" en pantalla y se quedarían invisibles para siempre.
+            // Se revela el carrusel entero en su lugar.
+            '.hero__brand, .hero__headline, .section-heading, .carousel, ' +
             '.hero__disclaimer, .hero__actions, .hero__stats, .list .report-card'
         );
         if (!objetivos.length) return;
@@ -547,6 +668,7 @@
         setupLocationField();
         renderUserReports();
         setupOfflineIndicator();
+        setupCategoryCarousel();
         setupScrollReveal();
         registerServiceWorker();
     }
