@@ -538,11 +538,6 @@ body {
     color: var(--color-text);
 }
 
-.hero__intro {
-    display: grid;
-    gap: var(--space-md);
-}
-
 .hero__headline {
     font-size: 1.75rem;
     font-weight: 800;
@@ -551,17 +546,6 @@ body {
     letter-spacing: -0.02em;
     max-width: 640px;
     margin: 0 auto;
-}
-
-.hero__lead {
-    font-size: var(--font-size-body);
-    color: var(--color-text);
-    line-height: 1.6;
-    max-width: 560px;
-    margin: 0 auto;
-    background-color: var(--color-primary-soft);
-    padding: var(--space-md);
-    border-radius: var(--radius-sm);
 }
 
 .hero__eyebrow .icon {
@@ -652,11 +636,6 @@ body {
     color: var(--color-text);
 }
 
-.section-heading__text {
-    font-size: var(--font-size-body);
-    color: var(--color-text-muted);
-}
-
 .btn--lg {
     min-height: 52px;
     padding: 0 var(--space-lg);
@@ -666,7 +645,7 @@ body {
 /* Grilla de categorías del inicio */
 .category-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    grid-template-columns: 1fr;
     gap: var(--space-md);
 }
 
@@ -712,6 +691,63 @@ body {
 .category-card__icon {
     background-color: rgba(110, 193, 228, 0.16);
     color: var(--color-text);
+}
+
+/* Tarjeta con foto de fondo.
+   El degradado oscuro encima (scrim) no es decorativo: garantiza que el
+   texto blanco mantenga el contraste mínimo sea cual sea la foto. */
+.category-card--photo {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--color-gray-700);
+    background-size: cover;
+    background-position: center;
+    border-color: transparent;
+}
+
+.category-card--photo::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(15, 23, 42, 0.55) 0%, rgba(15, 23, 42, 0.85) 100%);
+}
+
+.category-card--photo > * {
+    position: relative;
+    z-index: 1;
+}
+
+.category-card--photo .category-card__title,
+.category-card--photo .category-card__text,
+.category-card--photo .category-card__route,
+.category-card--photo .category-card__route strong,
+.category-card--photo .category-card__cta {
+    color: #ffffff;
+}
+
+.category-card--photo .category-card__route {
+    border-top-color: rgba(255, 255, 255, 0.25);
+}
+
+.category-card--photo .category-card__icon {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+}
+
+.category-card--bache {
+    background-image: url("../assets/images/cat-bache.jpg");
+}
+
+.category-card--alumbrado {
+    background-image: url("../assets/images/cat-alumbrado.jpg");
+}
+
+.category-card--inseguridad {
+    background-image: url("../assets/images/cat-inseguridad.jpg");
+}
+
+.category-card--convivencia {
+    background-image: url("../assets/images/cat-convivencia.jpg");
 }
 
 .category-card__icon .icon {
@@ -942,6 +978,11 @@ body {
 
     .hero__headline {
         font-size: 2.25rem;
+    }
+
+    /* En escritorio, 2 columnas: tarjetas anchas con lugar para una imagen */
+    .category-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
 
     .styleguide__component-grid {
