@@ -8,11 +8,13 @@
     --color-gray-300: #cbd5e1;
     --color-gray-500: #64748b;
     --color-gray-700: #334155;
-    --color-background: #f8fafc;
+    /* Fondo con un tinte celeste suave: el blanco puro cansa la vista y
+       además hace que las tarjetas blancas se pierdan contra la página. */
+    --color-background: #e8f3fa;
     --color-surface: #ffffff;
 
     --color-text: #54595F;
-    --color-text-muted: #7A7A7A;
+    --color-text-muted: #616161;
     --color-text-inverse: #ffffff;
 
     /* Rojo de los títulos de categoría: un tono por tema, porque el mismo
