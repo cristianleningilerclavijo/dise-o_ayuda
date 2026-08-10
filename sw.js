@@ -1,5 +1,5 @@
 /* Service worker de AyudaYa: guarda la app en el dispositivo para que funcione sin internet. */
-const CACHE = 'ayudaya-v1';
+const CACHE = 'ayudaya-v2';
 
 const ASSETS = [
     './',
@@ -14,7 +14,11 @@ const ASSETS = [
     './assets/images/logo-ayudaya.svg',
     './assets/images/favicon.svg',
     './assets/images/icon-192.png',
-    './assets/images/icon-512.png'
+    './assets/images/icon-512.png',
+    './assets/images/cat-bache.jpg',
+    './assets/images/cat-alumbrado.jpg',
+    './assets/images/cat-inseguridad.jpg',
+    './assets/images/cat-convivencia.webp'
 ];
 
 // Al instalar, descarga y guarda todos los archivos de la app.
