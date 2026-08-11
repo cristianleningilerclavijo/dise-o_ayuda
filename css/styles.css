@@ -1159,7 +1159,11 @@ body {
         height: 28px;
     }
 
-    .navbar__brand + .navbar__item {
+    /* Los ítems se van al extremo derecho: si hay marca, empujando desde
+       ella; si no la hay (como en Cuenta), desde el primer ítem. Así la
+       barra se ve igual en todas las pantallas. */
+    .navbar__brand + .navbar__item,
+    .navbar > .navbar__item:first-child {
         margin-left: auto;
     }
 
