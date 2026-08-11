@@ -666,6 +666,13 @@ body {
 }
 
 /* Grilla de categorías del inicio */
+/* En móvil no hay scroll horizontal ligado al vertical: el envoltorio no
+   hace nada y manda el carrusel táctil de siempre. */
+.hscroll,
+.hscroll__sticky {
+    display: contents;
+}
+
 /* Carrusel de categorías. El desplazamiento lo hace el propio navegador
    con scroll-snap: así funciona el gesto táctil y el teclado sin código
    extra, y las flechas solo empujan ese scroll. */
@@ -1138,18 +1145,44 @@ body {
         font-size: 2.25rem;
     }
 
-    /* En escritorio entran dos tarjetas y se asoma la tercera, para que se
-       entienda que hay más contenido hacia el costado. */
-    .carousel__track {
-        grid-auto-columns: 46%;
+    /* Scroll horizontal ligado al vertical.
+       La sección es alta para dar recorrido; dentro, un bloque pegajoso se
+       queda fijo en pantalla mientras el JS mueve la pista hacia el costado
+       según cuánto se avanzó. Las flechas y los puntos se ocultan: acá
+       manda la rueda del mouse. */
+    .hscroll {
+        display: block;
+        position: relative;
+        height: 260vh;
     }
 
-    .carousel__arrow--prev {
-        left: calc(var(--space-lg) * -1);
+    .hscroll__sticky {
+        display: flex;
+        position: sticky;
+        top: var(--nav-height);
+        align-items: center;
+        height: calc(100vh - var(--nav-height));
+        overflow: hidden;
     }
 
-    .carousel__arrow--next {
-        right: calc(var(--space-lg) * -1);
+    .hscroll__sticky .carousel {
+        width: 100%;
+    }
+
+    .hscroll__sticky .carousel__track {
+        display: flex;
+        overflow: visible;
+        scroll-snap-type: none;
+        will-change: transform;
+    }
+
+    .hscroll__sticky .carousel__track > * {
+        flex: 0 0 46%;
+    }
+
+    .hscroll__sticky .carousel__arrow,
+    .hscroll__sticky .carousel__dots {
+        display: none;
     }
 
     .styleguide__component-grid {

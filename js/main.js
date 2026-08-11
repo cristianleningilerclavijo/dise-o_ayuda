@@ -537,7 +537,6 @@
             punto.className = 'carousel__dot';
             punto.setAttribute('aria-label', 'Ver categoría ' + (i + 1) + ' de ' + tarjetas.length);
             punto.addEventListener('click', function () {
-                detenerAuto();
                 irA(i);
             });
             puntos.appendChild(punto);
@@ -557,13 +556,11 @@
 
         if (anterior) {
             anterior.addEventListener('click', function () {
-                detenerAuto();
                 irA(indiceActual() - 1);
             });
         }
         if (siguiente) {
             siguiente.addEventListener('click', function () {
-                detenerAuto();
                 irA(indiceActual() + 1);
             });
         }
@@ -578,34 +575,59 @@
             });
         });
 
-        // Avance automático. Se frena al interactuar y no arranca si la
-        // persona pidió reducir el movimiento.
-        let temporizador = null;
-
-        function detenerAuto() {
-            if (temporizador) {
-                clearInterval(temporizador);
-                temporizador = null;
-            }
-        }
-
-        function arrancarAuto() {
-            const prefiereQuieto = window.matchMedia &&
-                window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-            if (prefiereQuieto || temporizador) return;
-
-            temporizador = setInterval(function () {
-                const actual = indiceActual();
-                irA(actual >= tarjetas.length - 1 ? 0 : actual + 1);
-            }, 2500);
-        }
-
-        ['mouseenter', 'focusin', 'pointerdown', 'touchstart'].forEach(function (evento) {
-            carrusel.addEventListener(evento, detenerAuto, { passive: true });
-        });
-
         sincronizar();
-        arrancarAuto();
+    }
+
+    // Scroll horizontal ligado al vertical (solo escritorio).
+    // La sección mide más que la pantalla; mientras se recorre esa altura,
+    // el bloque queda pegado y la pista se desplaza al costado en proporción
+    // a lo avanzado. En móvil y con "reducir movimiento" no se activa, y la
+    // pista queda tal cual, con su deslizamiento táctil de siempre.
+    function setupHorizontalScroll() {
+        const seccion = document.getElementById('categoryScroll');
+        const pegajoso = seccion && seccion.querySelector('.hscroll__sticky');
+        const pista = document.getElementById('categoryTrack');
+        if (!seccion || !pegajoso || !pista) return;
+
+        const esEscritorio = window.matchMedia('(min-width: 768px)');
+        const prefiereQuieto = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+        function activo() {
+            return esEscritorio.matches && !prefiereQuieto.matches;
+        }
+
+        function actualizar() {
+            if (!activo()) {
+                pista.style.transform = '';
+                return;
+            }
+
+            const recorrido = seccion.offsetHeight - pegajoso.offsetHeight;
+            if (recorrido <= 0) return;
+
+            const avanzado = seccion.getBoundingClientRect().top * -1;
+            const avance = Math.min(Math.max(avanzado / recorrido, 0), 1);
+
+            const distancia = pista.scrollWidth - pegajoso.clientWidth;
+            if (distancia <= 0) return;
+
+            pista.style.transform = 'translateX(' + (-avance * distancia) + 'px)';
+        }
+
+        let esperando = false;
+        function alDesplazar() {
+            if (esperando) return;
+            esperando = true;
+            window.requestAnimationFrame(function () {
+                actualizar();
+                esperando = false;
+            });
+        }
+
+        window.addEventListener('scroll', alDesplazar, { passive: true });
+        window.addEventListener('resize', alDesplazar);
+        esEscritorio.addEventListener('change', alDesplazar);
+        actualizar();
     }
 
     // Hace aparecer las secciones a medida que entran en pantalla.
@@ -669,6 +691,7 @@
         renderUserReports();
         setupOfflineIndicator();
         setupCategoryCarousel();
+        setupHorizontalScroll();
         setupScrollReveal();
         registerServiceWorker();
     }
