@@ -575,41 +575,7 @@
             });
         });
 
-        // Avance automático, solo en escritorio: en el celular la persona
-        // desliza con el dedo y que la tarjeta se mueva sola estorba.
-        // Se frena apenas hay interacción y no arranca si se pidió reducir
-        // el movimiento.
-        let temporizador = null;
-        const esEscritorio = window.matchMedia('(min-width: 768px)');
-        const prefiereQuieto = window.matchMedia('(prefers-reduced-motion: reduce)');
-
-        function detenerAuto() {
-            if (temporizador) {
-                clearInterval(temporizador);
-                temporizador = null;
-            }
-        }
-
-        function arrancarAuto() {
-            if (temporizador || !esEscritorio.matches || prefiereQuieto.matches) return;
-
-            temporizador = setInterval(function () {
-                const actual = indiceActual();
-                irA(actual >= tarjetas.length - 1 ? 0 : actual + 1);
-            }, 1000);
-        }
-
-        ['mouseenter', 'focusin', 'pointerdown', 'touchstart'].forEach(function (evento) {
-            carrusel.addEventListener(evento, detenerAuto, { passive: true });
-        });
-
-        esEscritorio.addEventListener('change', function () {
-            detenerAuto();
-            arrancarAuto();
-        });
-
         sincronizar();
-        arrancarAuto();
     }
 
     // Zonas activas en los bordes: con el cursor sobre la franja izquierda o
