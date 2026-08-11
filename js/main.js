@@ -575,59 +575,41 @@
             });
         });
 
-        sincronizar();
-    }
-
-    // Scroll horizontal ligado al vertical (solo escritorio).
-    // La sección mide más que la pantalla; mientras se recorre esa altura,
-    // el bloque queda pegado y la pista se desplaza al costado en proporción
-    // a lo avanzado. En móvil y con "reducir movimiento" no se activa, y la
-    // pista queda tal cual, con su deslizamiento táctil de siempre.
-    function setupHorizontalScroll() {
-        const seccion = document.getElementById('categoryScroll');
-        const pegajoso = seccion && seccion.querySelector('.hscroll__sticky');
-        const pista = document.getElementById('categoryTrack');
-        if (!seccion || !pegajoso || !pista) return;
-
+        // Avance automático, solo en escritorio: en el celular la persona
+        // desliza con el dedo y que la tarjeta se mueva sola estorba.
+        // Se frena apenas hay interacción y no arranca si se pidió reducir
+        // el movimiento.
+        let temporizador = null;
         const esEscritorio = window.matchMedia('(min-width: 768px)');
         const prefiereQuieto = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-        function activo() {
-            return esEscritorio.matches && !prefiereQuieto.matches;
-        }
-
-        function actualizar() {
-            if (!activo()) {
-                pista.style.transform = '';
-                return;
+        function detenerAuto() {
+            if (temporizador) {
+                clearInterval(temporizador);
+                temporizador = null;
             }
-
-            const recorrido = seccion.offsetHeight - pegajoso.offsetHeight;
-            if (recorrido <= 0) return;
-
-            const avanzado = seccion.getBoundingClientRect().top * -1;
-            const avance = Math.min(Math.max(avanzado / recorrido, 0), 1);
-
-            const distancia = pista.scrollWidth - pegajoso.clientWidth;
-            if (distancia <= 0) return;
-
-            pista.style.transform = 'translateX(' + (-avance * distancia) + 'px)';
         }
 
-        let esperando = false;
-        function alDesplazar() {
-            if (esperando) return;
-            esperando = true;
-            window.requestAnimationFrame(function () {
-                actualizar();
-                esperando = false;
-            });
+        function arrancarAuto() {
+            if (temporizador || !esEscritorio.matches || prefiereQuieto.matches) return;
+
+            temporizador = setInterval(function () {
+                const actual = indiceActual();
+                irA(actual >= tarjetas.length - 1 ? 0 : actual + 1);
+            }, 1000);
         }
 
-        window.addEventListener('scroll', alDesplazar, { passive: true });
-        window.addEventListener('resize', alDesplazar);
-        esEscritorio.addEventListener('change', alDesplazar);
-        actualizar();
+        ['mouseenter', 'focusin', 'pointerdown', 'touchstart'].forEach(function (evento) {
+            carrusel.addEventListener(evento, detenerAuto, { passive: true });
+        });
+
+        esEscritorio.addEventListener('change', function () {
+            detenerAuto();
+            arrancarAuto();
+        });
+
+        sincronizar();
+        arrancarAuto();
     }
 
     // Hace aparecer las secciones a medida que entran en pantalla.
@@ -691,7 +673,6 @@
         renderUserReports();
         setupOfflineIndicator();
         setupCategoryCarousel();
-        setupHorizontalScroll();
         setupScrollReveal();
         registerServiceWorker();
     }
