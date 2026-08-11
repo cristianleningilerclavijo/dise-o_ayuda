@@ -612,6 +612,64 @@
         arrancarAuto();
     }
 
+    // Zonas activas en los bordes: con el cursor sobre la franja izquierda o
+    // derecha, las tarjetas se desplazan solas a ritmo parejo; en el centro
+    // se detienen, para poder leer y hacer clic sin que nada se mueva.
+    // Al salir vuelve a activarse el imán, que asienta la tarjeta más cercana.
+    function setupHoverScroll() {
+        const pista = document.getElementById('categoryTrack');
+        if (!pista) return;
+
+        const zonas = document.querySelectorAll('.carousel__arrow');
+        if (!zonas.length) return;
+
+        const esEscritorio = window.matchMedia('(min-width: 768px)');
+        const prefiereQuieto = window.matchMedia('(prefers-reduced-motion: reduce)');
+        const VELOCIDAD = 3; // píxeles por cuadro: unos 180 por segundo
+
+        let cuadro = null;
+
+        function detener() {
+            if (cuadro) {
+                cancelAnimationFrame(cuadro);
+                cuadro = null;
+            }
+            pista.classList.remove('carousel__track--cursor');
+        }
+
+        function correr(direccion) {
+            const limite = pista.scrollWidth - pista.clientWidth;
+            const siguiente = pista.scrollLeft + VELOCIDAD * direccion;
+
+            if (siguiente <= 0 || siguiente >= limite) {
+                pista.scrollLeft = Math.min(Math.max(siguiente, 0), limite);
+                detener();
+                return;
+            }
+
+            pista.scrollLeft = siguiente;
+            cuadro = requestAnimationFrame(function () { correr(direccion); });
+        }
+
+        zonas.forEach(function (zona) {
+            const direccion = zona.classList.contains('carousel__arrow--prev') ? -1 : 1;
+
+            zona.addEventListener('pointerenter', function (e) {
+                if (e.pointerType !== 'mouse') return;
+                if (!esEscritorio.matches || prefiereQuieto.matches) return;
+
+                detener();
+                pista.classList.add('carousel__track--cursor');
+                correr(direccion);
+            });
+
+            zona.addEventListener('pointerleave', function (e) {
+                if (e.pointerType !== 'mouse') return;
+                detener();
+            });
+        });
+    }
+
     // Hace aparecer las secciones a medida que entran en pantalla.
     // Solo se activa si el navegador soporta IntersectionObserver y si la
     // persona no pidió reducir el movimiento; en cualquier otro caso el
@@ -673,6 +731,7 @@
         renderUserReports();
         setupOfflineIndicator();
         setupCategoryCarousel();
+        setupHoverScroll();
         setupScrollReveal();
         registerServiceWorker();
     }

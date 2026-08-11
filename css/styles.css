@@ -693,34 +693,55 @@ body {
     scroll-snap-align: center;
 }
 
+/* Mientras el cursor comanda el desplazamiento hay que apagar el imán y el
+   suavizado: los dos tiran de la pista y pelean contra la posición exacta
+   que marca el mouse, provocando tirones. */
+.carousel__track--cursor {
+    scroll-snap-type: none;
+    scroll-behavior: auto;
+}
+
+/* Cada flecha es en realidad una franja alta pegada al borde: al entrar el
+   cursor en ella las tarjetas se desplazan. El centro queda libre para
+   leer y hacer clic sin que nada se mueva. */
 .carousel__arrow {
     position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
+    top: 0;
+    bottom: 0;
     z-index: 2;
-    width: 44px;
-    height: 44px;
+    width: 76px;
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 0;
+    border: none;
+    background: none;
+    color: var(--color-text);
+    cursor: pointer;
+}
+
+/* El círculo visible dentro de la franja */
+.carousel__arrow .icon {
+    width: 42px;
+    height: 42px;
+    padding: 9px;
     border: 1px solid var(--color-gray-300);
     border-radius: 50%;
     background-color: var(--color-surface);
-    color: var(--color-text);
-    cursor: pointer;
     box-shadow: var(--shadow-md);
     transition: background-color 0.2s, transform 0.15s;
 }
 
-.carousel__arrow:hover {
+.carousel__arrow:hover .icon {
     background-color: var(--color-gray-100);
+    transform: scale(1.06);
 }
 
-.carousel__arrow:active {
-    transform: translateY(-50%) scale(0.94);
+.carousel__arrow:active .icon {
+    transform: scale(0.94);
 }
 
-.carousel__arrow:focus-visible {
+.carousel__arrow:focus-visible .icon {
     outline: 3px solid var(--color-secondary);
     outline-offset: 2px;
 }
@@ -731,11 +752,11 @@ body {
 }
 
 .carousel__arrow--prev {
-    left: calc(var(--space-sm) * -1);
+    left: 0;
 }
 
 .carousel__arrow--next {
-    right: calc(var(--space-sm) * -1);
+    right: 0;
 }
 
 .carousel__dots {
@@ -1176,12 +1197,9 @@ body {
         grid-auto-columns: 46%;
     }
 
-    .carousel__arrow--prev {
-        left: calc(var(--space-lg) * -1);
-    }
-
-    .carousel__arrow--next {
-        right: calc(var(--space-lg) * -1);
+    /* Franjas algo más anchas en escritorio, que es donde se usan */
+    .carousel__arrow {
+        width: 96px;
     }
 
     .styleguide__component-grid {
